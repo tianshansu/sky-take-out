@@ -10,7 +10,7 @@ public interface EmployeeService {
 
     /**
      * employee login
-     * @param employeeLoginDTO
+     * @param employeeLoginDTO employeeLoginDTO
      * @return employee
      */
     Employee login(EmployeeLoginDTO employeeLoginDTO);
@@ -19,12 +19,12 @@ public interface EmployeeService {
     /**
      * Add new employee
      */
-    public void addEmployee(EmployeeDTO employeeDTO);
+    void addEmployee(EmployeeDTO employeeDTO);
 
     /**
      * Page employee
-     * @param employeePageQueryDTO
+     * @param employeePageQueryDTO employeePageQueryDTO
      * @return page result
      */
-    public PageResult page(EmployeePageQueryDTO employeePageQueryDTO);
+    PageResult page(EmployeePageQueryDTO employeePageQueryDTO);
 }

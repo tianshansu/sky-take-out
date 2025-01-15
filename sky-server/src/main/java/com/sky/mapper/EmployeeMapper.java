@@ -3,19 +3,19 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
-import com.sky.result.PageResult;
+//import com.sky.result.PageResult;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import java.util.List;
+//import java.util.List;
 
 @Mapper
 public interface EmployeeMapper {
 
     /**
      * find employee by username
-     * @param username
+     * @param username username
      * @return employee
      */
     @Select("select * from employee where username = #{username}")
@@ -30,7 +30,7 @@ public interface EmployeeMapper {
 
     /**
      * Select employee, page employee
-     * @param employeePageQueryDTO
+     * @param employeePageQueryDTO employeePageQueryDTO
      * @return page result
      */
     //using dynamic sql query
