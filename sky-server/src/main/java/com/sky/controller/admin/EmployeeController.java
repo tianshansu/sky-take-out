@@ -35,8 +35,8 @@ public class EmployeeController {
     /**
      * Login
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO employeeLoginDTO
+     * @return result
      */
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
@@ -66,7 +66,7 @@ public class EmployeeController {
     /**
      * logout
      *
-     * @return
+     * @return result
      */
     @PostMapping("/logout")
     public Result<String> logout() {
@@ -76,6 +76,8 @@ public class EmployeeController {
 
     /**
      * Add new employee
+     * @param employeeDTO employeeDTO
+     * @return result
      */
     @PostMapping
     @ApiOperation("Add new employee")
@@ -85,6 +87,11 @@ public class EmployeeController {
         return Result.success();
     }
 
+    /**
+     * Paging employee
+     * @param employeePageQueryDTO employeePageQueryDTO
+     * @return result
+     */
     @GetMapping("/page")
     @ApiOperation("Show employee list")
     public Result<PageResult> page(EmployeePageQueryDTO employeePageQueryDTO) {
@@ -92,6 +99,21 @@ public class EmployeeController {
         PageResult pageResult = employeeService.page(employeePageQueryDTO);
         return Result.success(pageResult);
 
+    }
+
+
+    /**
+     * Enable and disable employee account
+     * @param status new status, 0=disable,1=enable
+     * @param id employee id
+     * @return result
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("Enable and disable employee account")
+    public Result changeEmployeeStatus(@PathVariable Integer status, @RequestParam long id) {
+        log.info("change employee {} status to:{}", id,status);
+        employeeService.changeStatus(id,status);
+        return Result.success();
     }
 
 }

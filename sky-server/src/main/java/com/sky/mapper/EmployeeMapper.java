@@ -7,6 +7,7 @@ import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+//import org.apache.ibatis.annotations.Update;
 
 //import java.util.List;
 
@@ -35,4 +36,11 @@ public interface EmployeeMapper {
      */
     //using dynamic sql query
     Page<Employee> page(EmployeePageQueryDTO employeePageQueryDTO);
+
+    /**
+     * change employee account status
+     * @param employee employee object
+     */
+    //@Update("update employee set status=#{status} where id=#{id}")
+    void changeStatus(Employee employee);
 }

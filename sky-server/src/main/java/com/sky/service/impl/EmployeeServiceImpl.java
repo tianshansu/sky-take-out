@@ -33,8 +33,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * emp login
      *
-     * @param employeeLoginDTO
-     * @return
+     * @param employeeLoginDTO employeeLoginDTO
+     * @return employee
      */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
@@ -70,7 +70,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     /**
      * Add new employee
      *
-     * @param employeeDTO
+     * @param employeeDTO employeeDTO
      */
     @Override
     public void addEmployee(EmployeeDTO employeeDTO) {
@@ -95,7 +95,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     /**
      * Paging employee
-     * @param employeePageQueryDTO
+     * @param employeePageQueryDTO employeePageQueryDTO
      * @return page result
      */
     @Override
@@ -107,6 +107,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         long totalPage = page.getTotal();
         List<Employee> records = page.getResult();
         return new PageResult(totalPage, records);
+    }
+
+    /**
+     * Enable and disable employee account
+     * @param id employee id
+     * @param status new status,0=disable,1=enable
+     */
+    @Override
+    public void changeStatus(long id,Integer status) {
+        //employeeMapper.changeStatus(id,status);
+        //build a new employee object and set status & id
+        Employee employee=Employee.builder().status(status).id(id).build();
+        employeeMapper.changeStatus(employee);
     }
 
 }
