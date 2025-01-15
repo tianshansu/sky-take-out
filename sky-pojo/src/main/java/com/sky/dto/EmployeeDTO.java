@@ -1,5 +1,6 @@
 package com.sky.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -7,7 +8,7 @@ import java.io.Serializable;
 @Data
 public class EmployeeDTO implements Serializable {
 
-    private Long id;
+    //private Long id;
 
     private String username;
 
@@ -15,7 +16,8 @@ public class EmployeeDTO implements Serializable {
 
     private String phone;
 
-    private String sex;
+    @JsonProperty("sex")
+    private String gender;
 
     private String idNumber;
 
