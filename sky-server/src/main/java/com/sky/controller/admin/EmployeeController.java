@@ -76,6 +76,7 @@ public class EmployeeController {
 
     /**
      * Add new employee
+     *
      * @param employeeDTO employeeDTO
      * @return result
      */
@@ -89,6 +90,7 @@ public class EmployeeController {
 
     /**
      * Paging employee
+     *
      * @param employeePageQueryDTO employeePageQueryDTO
      * @return result
      */
@@ -104,16 +106,44 @@ public class EmployeeController {
 
     /**
      * Enable and disable employee account
+     *
      * @param status new status, 0=disable,1=enable
-     * @param id employee id
+     * @param id     employee id
      * @return result
      */
     @PostMapping("/status/{status}")
     @ApiOperation("Enable and disable employee account")
     public Result changeEmployeeStatus(@PathVariable Integer status, @RequestParam long id) {
-        log.info("change employee {} status to:{}", id,status);
-        employeeService.changeStatus(id,status);
+        log.info("change employee {} status to:{}", id, status);
+        employeeService.changeStatus(id, status);
         return Result.success();
     }
+
+    /**
+     * Modify employee info
+     * @param employeeDTO employeeDTO
+     * @return result
+     */
+    @PutMapping
+    @ApiOperation("Modify employee info")
+    public Result modifyEmployee(@RequestBody EmployeeDTO employeeDTO) {
+        log.info("modify employee:{}", employeeDTO);
+        employeeService.modifyEmployee(employeeDTO);
+        return Result.success();
+    }
+
+    /**
+     * Get employee info by id
+     * @param id employee id
+     * @return result - employee info
+     */
+    @GetMapping("/{id}")
+    @ApiOperation("Get employee info by id")
+    public Result<Employee> getEmployeeById(@PathVariable Long id) {
+        log.info("get employee by id:{}", id);
+        Employee employee = employeeService.getEmployeeById(id);
+        return Result.success(employee);
+    }
+
 
 }

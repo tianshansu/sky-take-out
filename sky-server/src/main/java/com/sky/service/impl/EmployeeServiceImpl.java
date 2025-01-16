@@ -119,7 +119,30 @@ public class EmployeeServiceImpl implements EmployeeService {
         //employeeMapper.changeStatus(id,status);
         //build a new employee object and set status & id
         Employee employee=Employee.builder().status(status).id(id).build();
-        employeeMapper.changeStatus(employee);
+        employeeMapper.modifyEmployee(employee);
+    }
+
+    /**
+     * Modify employee info
+     * @param employeeDTO employeeDTO
+     */
+    @Override
+    public void modifyEmployee(EmployeeDTO employeeDTO) {
+        Employee employee=Employee.builder().id(employeeDTO.getId()).username(employeeDTO.getUsername()).name(employeeDTO.getName()).phone(employeeDTO.getPhone()).gender(employeeDTO.getGender()).idNumber(employeeDTO.getIdNumber()).build();
+        employee.setUpdateTime(LocalDateTime.now());
+        employee.setUpdateUser(BaseContext.getCurrentId());
+        employeeMapper.modifyEmployee(employee);
+    }
+
+    /**
+     * Get employee info by id
+     * @param id employee id
+     * @return employee
+     */
+    @Override
+    public Employee getEmployeeById(Long id) {
+        Employee employee=employeeMapper.getEmployeeById(id);
+        return employee;
     }
 
 }

@@ -14,7 +14,7 @@
 
     </select>
 
-    <update id="changeStatus" parameterType="Employee">
+    <update id="modifyEmployee" parameterType="Employee">
         update employee
         <set>
             <if test="name!=null"> name=#{name},</if>
@@ -29,4 +29,5 @@
         </set>
         where id=#{id}
     </update>
+
 </mapper>

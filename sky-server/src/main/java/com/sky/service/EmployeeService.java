@@ -34,4 +34,17 @@ public interface EmployeeService {
      * @param status new status,0=disable,1=enable
      */
     void changeStatus(long id,Integer status);
+
+    /**
+     * Modify employee info
+     * @param employeeDTO employeeDTO
+     */
+    void modifyEmployee(EmployeeDTO employeeDTO);
+
+    /**
+     * Get employee info by id
+     * @param id employee id
+     * @return employee
+     */
+    Employee getEmployeeById(Long id);
 }
