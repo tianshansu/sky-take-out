@@ -76,10 +76,10 @@ public class CategoryServiceImpl implements CategoryService {
                 .name(categoryDTO.getName())
                 .sort(categoryDTO.getSort())
                 .status(0) //status set to disabled when first created
-                .createTime(LocalDateTime.now())
-                .updateTime(LocalDateTime.now())
-                .createUser(BaseContext.getCurrentId())
-                .updateUser(BaseContext.getCurrentId())
+                //.createTime(LocalDateTime.now())
+                //.updateTime(LocalDateTime.now())
+                //.createUser(BaseContext.getCurrentId())
+                //.updateUser(BaseContext.getCurrentId())
                 .build();
         categoryMapper.addCategory(category);
     }
@@ -96,8 +96,8 @@ public class CategoryServiceImpl implements CategoryService {
                 .type(categoryDTO.getType())
                 .name(categoryDTO.getName())
                 .sort(categoryDTO.getSort())
-                .updateTime(LocalDateTime.now())
-                .updateUser(BaseContext.getCurrentId())
+                //.updateTime(LocalDateTime.now())
+                //.updateUser(BaseContext.getCurrentId())
                 .build();
         categoryMapper.modifyCategory(category);
     }

@@ -81,14 +81,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         // Set account info
         employee.setStatus(StatusConstant.ENABLE);
-        employee.setCreateTime(LocalDateTime.now());
-        employee.setUpdateTime(LocalDateTime.now());
+        //employee.setCreateTime(LocalDateTime.now());
+        //employee.setUpdateTime(LocalDateTime.now());
         employee.setPassword(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes())); // Set default password
 
         // Change to current login user's info
         long threadId = BaseContext.getCurrentId(); // Get current thread ID
-        employee.setCreateUser(threadId);
-        employee.setUpdateUser(threadId);
+        //employee.setCreateUser(threadId);
+        //employee.setUpdateUser(threadId);
 
         employeeMapper.addEmployee(employee);
     }
@@ -129,8 +129,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void modifyEmployee(EmployeeDTO employeeDTO) {
         Employee employee=Employee.builder().id(employeeDTO.getId()).username(employeeDTO.getUsername()).name(employeeDTO.getName()).phone(employeeDTO.getPhone()).gender(employeeDTO.getGender()).idNumber(employeeDTO.getIdNumber()).build();
-        employee.setUpdateTime(LocalDateTime.now());
-        employee.setUpdateUser(BaseContext.getCurrentId());
+        //employee.setUpdateTime(LocalDateTime.now());
+        //employee.setUpdateUser(BaseContext.getCurrentId());
         employeeMapper.modifyEmployee(employee);
     }
 
