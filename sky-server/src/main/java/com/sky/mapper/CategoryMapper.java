@@ -8,6 +8,10 @@ import com.sky.enumeration.OperationType;
 import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
@@ -37,4 +41,7 @@ public interface CategoryMapper {
 
     @Delete("delete from category where id=#{id}")
     void deleteCategory(Long id);
+
+    @Select("select * from category where type = #{type}")
+    List<Category> listByCategory(Integer type);
 }

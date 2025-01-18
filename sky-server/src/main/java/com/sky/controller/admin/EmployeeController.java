@@ -11,6 +11,7 @@ import com.sky.result.Result;
 import com.sky.service.EmployeeService;
 import com.sky.utils.JwtUtil;
 import com.sky.vo.EmployeeLoginVO;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/admin/employee")
+@Api(tags = "Employee Related")
 @Slf4j
 public class EmployeeController {
 
@@ -113,7 +115,7 @@ public class EmployeeController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("Enable and disable employee account")
-    public Result changeEmployeeStatus(@PathVariable Integer status, @RequestParam long id) {
+    public Result<String> changeEmployeeStatus(@PathVariable Integer status, @RequestParam long id) {
         log.info("change employee {} status to:{}", id, status);
         employeeService.changeStatus(id, status);
         return Result.success();
@@ -126,7 +128,7 @@ public class EmployeeController {
      */
     @PutMapping
     @ApiOperation("Modify employee info")
-    public Result modifyEmployee(@RequestBody EmployeeDTO employeeDTO) {
+    public Result<String> modifyEmployee(@RequestBody EmployeeDTO employeeDTO) {
         log.info("modify employee:{}", employeeDTO);
         employeeService.modifyEmployee(employeeDTO);
         return Result.success();

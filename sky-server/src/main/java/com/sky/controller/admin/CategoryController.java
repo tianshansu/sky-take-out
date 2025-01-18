@@ -2,20 +2,25 @@ package com.sky.controller.admin;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.CategoryService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * Category controller
  */
 @RestController
 @RequestMapping("/admin/category")
+@Api(tags = "Category Related")
 @Slf4j
 public class CategoryController {
 
@@ -37,16 +42,16 @@ public class CategoryController {
     }
 
     /**
-     * show list by type or name
-     * @param categoryPageQueryDTO categoryPageQueryDTO
+     * show list by type
+     * @param type type
      * @return page result
      */
     @GetMapping("/list")
-    @ApiOperation("show list by type or name")
-    public Result<PageResult> list(CategoryPageQueryDTO categoryPageQueryDTO) {
-        log.info("type selected:{}" , categoryPageQueryDTO);
-        PageResult pageResult=categoryService.page(categoryPageQueryDTO);
-        return Result.success(pageResult);
+    @ApiOperation("show list by type")
+    public Result<List<Category>> list(Integer type) {
+        log.info("type selected:{}" , type);
+        List<Category> categories=categoryService.listByCategory(type);
+        return Result.success(categories);
     }
 
     /**
@@ -57,7 +62,7 @@ public class CategoryController {
      */
     @PostMapping("/status/{status}")
     @ApiOperation("enable, disable category")
-    public Result enableDisableCategory(@PathVariable Integer status, @RequestParam Long id) {
+    public Result<String> enableDisableCategory(@PathVariable Integer status, @RequestParam Long id) {
         log.info("categpry id: {}m new status:{}" , id,status);
         categoryService.changeStatus(id,status);
         return Result.success();
@@ -70,7 +75,7 @@ public class CategoryController {
      */
     @PostMapping
     @ApiOperation("add new category")
-    public Result addCategory(@RequestBody CategoryDTO categoryDTO) {
+    public Result<String> addCategory(@RequestBody CategoryDTO categoryDTO) {
         log.info("add new category:{}", categoryDTO);
         categoryService.addCategory(categoryDTO);
         return Result.success();
@@ -83,7 +88,7 @@ public class CategoryController {
      */
     @PutMapping
     @ApiOperation("modify a category")
-    public Result modifyCategory(@RequestBody CategoryDTO categoryDTO) {
+    public Result<String> modifyCategory(@RequestBody CategoryDTO categoryDTO) {
         log.info("modify category:{}", categoryDTO);
         categoryService.modifyCategory(categoryDTO);
         return Result.success();
@@ -91,7 +96,7 @@ public class CategoryController {
 
     @DeleteMapping
     @ApiOperation("delete a category")
-    public Result deleteCategory(@RequestParam Long id){
+    public Result<String> deleteCategory(@RequestParam Long id){
         log.info("delete category:{}", id);
         categoryService.deleteCategory(id);
         return Result.success();

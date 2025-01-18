@@ -37,3 +37,9 @@ sky:
     admin-ttl: 604800000
     # Set the token name passed by the front end
     admin-token-name: token
+
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    access-key-id: ${sky.alioss.access-key-id}
+    access-key-secret: ${sky.alioss.access-key-secret}
+    bucket-name: ${sky.alioss.bucket-name}

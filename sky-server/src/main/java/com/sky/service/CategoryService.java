@@ -2,7 +2,10 @@ package com.sky.service;
 
 import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
+import com.sky.entity.Category;
 import com.sky.result.PageResult;
+
+import java.util.List;
 
 public interface CategoryService {
 
@@ -34,5 +37,17 @@ public interface CategoryService {
      */
     void modifyCategory(CategoryDTO categoryDTO);
 
+    /**
+     * delete a category
+     * @param id category id
+     */
     void deleteCategory(Long id);
+
+
+    /**
+     * list by category
+     * @param type type
+     * @return list
+     */
+    List<Category> listByCategory(Integer type);
 }

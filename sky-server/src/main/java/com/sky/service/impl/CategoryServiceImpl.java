@@ -125,5 +125,16 @@ public class CategoryServiceImpl implements CategoryService {
 
     }
 
+    /**
+     * list by category
+     * @param type type
+     * @return list
+     */
+    @Override
+    public List<Category> listByCategory(Integer type) {
+        List<Category> categories= categoryMapper.listByCategory(type);
+        return categories;
+    }
+
 
 }
