@@ -8,7 +8,6 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Dish;
-import com.sky.entity.Employee;
 import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
@@ -114,7 +113,7 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
         //select all records in dishes of this categoryId
-        List<Dish> dishList = dishMapper.getDishById(id);
+        List<Dish> dishList = dishMapper.getDishByCategoryId(id);
         //if list size >0 (there are dishes inside), throw exception
         if(setMealList.size() > 0) {
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);

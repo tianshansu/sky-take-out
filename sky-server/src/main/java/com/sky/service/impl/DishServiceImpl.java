@@ -1,18 +1,29 @@
 package com.sky.service.impl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
+import com.sky.constant.MessageConstant;
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
+import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.entity.DishFlavor;
+import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.DishFlavorMapper;
 import com.sky.mapper.DishMapper;
+import com.sky.mapper.SetmealDishMapper;
+import com.sky.result.PageResult;
 import com.sky.service.DishService;
+import com.sky.vo.DishVO;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Service
 public class DishServiceImpl implements DishService {
@@ -21,6 +32,9 @@ public class DishServiceImpl implements DishService {
 
     @Autowired
     DishFlavorMapper dishFlavorMapper;
+
+    @Autowired
+    SetmealDishMapper setmealDishMapper;
 
     /**
      * add a new dish
@@ -47,7 +61,90 @@ public class DishServiceImpl implements DishService {
             }
             dishFlavorMapper.insertBatch(flavors);
         }
+    }
 
+    /**
+     * dish paging
+     *
+     * @param dishPageQueryDTO dishPageQueryDTO
+     * @return page result
+     */
+    @Override
+    public PageResult page(DishPageQueryDTO dishPageQueryDTO) {
+        PageHelper.startPage(dishPageQueryDTO.getPage(), dishPageQueryDTO.getPageSize());
+
+        Page<DishVO> page = dishMapper.page(dishPageQueryDTO);
+
+        long totalPage = page.getTotal();
+        List<DishVO> records = page.getResult();
+        return new PageResult(totalPage, records);
 
     }
+
+    /**
+     * select dish by id
+     * @param id dish id
+     * @return dishVO
+     */
+    @Override
+    public DishVO selectDishById(Integer id) {
+        DishVO dishVO = dishMapper.selectDishById(id);
+        List<DishFlavor> dishFlavors = dishFlavorMapper.getFlavorList(id);
+        dishVO.setFlavors(dishFlavors);
+        return dishVO;
+    }
+
+    /**
+     * delete dishes
+     * @param ids dish ids
+     * @return result
+     */
+    @Transactional //involves 2 tables, need to use transaction
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        //check whether all dishes are in disabled status(can be deleted)
+        for (Long id : ids) {
+            Dish dish = dishMapper.getDishById(id);
+            //if current dish is on sale, throw an exception
+            if(dish.getStatus()== StatusConstant.ENABLE){
+                throw new DeletionNotAllowedException(MessageConstant.DISH_ON_SALE);
+            }
+        }
+
+        //check whether all dishes are not in any setmeals(can be deleted)
+        List<Long> setmealIds = setmealDishMapper.getSetmealIdsByDishIds(ids);
+        if(setmealIds !=null && setmealIds.size()>0){
+            throw new DeletionNotAllowedException(MessageConstant.DISH_BE_RELATED_BY_SETMEAL);
+        }
+
+        //delete dish
+        dishMapper.deleteBatch(ids);
+
+        //delete dishflavor
+        dishFlavorMapper.deleteBatch(ids);
+    }
+
+    /**
+     * modify dish
+     * @param dishDTO dishDTO
+     * @return result
+     */
+    @Transactional
+    @Override
+    public void modifyDish(DishDTO dishDTO) {
+        Dish dish = new Dish();
+        //modify dish info
+        BeanUtils.copyProperties(dishDTO, dish);
+        dishMapper.modifyDish(dish);
+
+
+        //delete original flavors and add new flavors
+        List<Long> id=new ArrayList<Long>(1);
+        id.add(dish.getId());
+        dishFlavorMapper.deleteBatch(id);
+
+        dishFlavorMapper.insertBatch(dishDTO.getFlavors());
+    }
+
+
 }

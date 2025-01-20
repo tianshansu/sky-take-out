@@ -48,7 +48,7 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
      * @return
      */
     @Bean
-    public Docket docket() {
+    public Docket docket1() {
         log.info("prepare for interface doc...");
         ApiInfo apiInfo = new ApiInfoBuilder()
                 .title("sky take out interface document")
@@ -56,9 +56,28 @@ public class WebMvcConfiguration extends WebMvcConfigurationSupport {
                 .description("sky take out interface document")
                 .build();
         Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("sky take out admin interface document")
                 .apiInfo(apiInfo)
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.sky.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.admin"))
+                .paths(PathSelectors.any())
+                .build();
+        return docket;
+    }
+
+    @Bean
+    public Docket docket2() {
+        log.info("prepare for interface doc...");
+        ApiInfo apiInfo = new ApiInfoBuilder()
+                .title("sky take out interface document")
+                .version("2.0")
+                .description("sky take out interface document")
+                .build();
+        Docket docket = new Docket(DocumentationType.SWAGGER_2)
+                .groupName("sky take out user interface document")
+                .apiInfo(apiInfo)
+                .select()
+                .apis(RequestHandlerSelectors.basePackage("com.sky.controller.user"))
                 .paths(PathSelectors.any())
                 .build();
         return docket;
