@@ -12,7 +12,7 @@ import com.sky.entity.Setmeal;
 import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
-import com.sky.mapper.SetMealMapper;
+import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryMapper categoryMapper;
 
     @Autowired
-    private SetMealMapper setMealMapper;
+    private SetmealMapper setMealMapper;
 
     @Autowired
     private DishMapper dishMapper;
@@ -106,14 +106,19 @@ public class CategoryServiceImpl implements CategoryService {
         //search whether there is any dishes or setmeals under this category
 
         //select all records in setmeal of this categoryId
-        List<Setmeal> setMealList = setMealMapper.getSetMealById(id);
+        Setmeal setmeal=new Setmeal();
+        setmeal.setId(id);
+        List<Setmeal> setMealList = setMealMapper.list(setmeal);
         //if list size >0 (there are setmeals inside), throw exception
         if(setMealList.size() > 0) {
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_SETMEAL);
         }
 
         //select all records in dishes of this categoryId
-        List<Dish> dishList = dishMapper.getDishByCategoryId(id);
+        Dish dish=new Dish();
+        dish.setCategoryId(id);
+
+        List<Dish> dishList = dishMapper.list(dish);
         //if list size >0 (there are dishes inside), throw exception
         if(setMealList.size() > 0) {
             throw new DeletionNotAllowedException(MessageConstant.CATEGORY_BE_RELATED_BY_DISH);

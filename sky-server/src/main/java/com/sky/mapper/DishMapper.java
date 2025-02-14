@@ -15,8 +15,12 @@ import java.util.List;
 @Mapper
 public interface DishMapper {
 
-    @Select("select * from dish where category_id=#{id}")
-    List<Dish> getDishByCategoryId(Long id);
+    /**
+     * select dishes
+     * @param dish dish
+     * @return dish list
+     */
+    List<Dish> list(Dish dish);
 
     /**
      * add new dish
@@ -41,7 +45,7 @@ public interface DishMapper {
      * @return dishVO
      */
     @Select("select dish.*, category.name as categoryName from dish inner join category on dish.category_id = category.id\n where dish.id=#{id}")
-    DishVO selectDishById(Integer id);
+    DishVO selectDishById(Long id);
 
 
     /**

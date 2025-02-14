@@ -54,4 +54,16 @@
         </set>
         where id=#{id}
     </update>
+
+    <select id="list" resultType="Dish">
+        select * from dish
+        <where>
+            <if test="categoryId!=null">
+                category_id=#{categoryId} and
+            </if>
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </where>
+    </select>
 </mapper>

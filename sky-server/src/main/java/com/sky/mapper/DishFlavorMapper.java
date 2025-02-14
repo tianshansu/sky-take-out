@@ -22,7 +22,7 @@ public interface DishFlavorMapper {
      * @return dishVO
      */
     @Select("select * from dish_flavor where dish_id=#{id}")
-    List<DishFlavor> getFlavorList(Integer id);
+    List<DishFlavor> getFlavorList(Long id);
 
 
     void deleteBatch(List<Long> ids);

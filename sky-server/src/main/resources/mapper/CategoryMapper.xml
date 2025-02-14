@@ -28,4 +28,14 @@
         </set>
         where id =#{id}
     </update>
+
+    <select id="listByCategory" resultType="Category">
+        select *
+        from category
+        <where>
+            <if test="type!=null">
+                type=#{type}
+            </if>
+        </where>
+    </select>
 </mapper>

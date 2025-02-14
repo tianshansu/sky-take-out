@@ -18,7 +18,7 @@ import java.util.List;
 /**
  * Dish related
  */
-@RestController
+@RestController("adminDishController")
 @RequestMapping("/admin/dish")
 @Api(tags = "Dish Related")
 @Slf4j
@@ -64,7 +64,7 @@ public class DishController {
      */
     @GetMapping("/{id}")
     @ApiOperation("select dish by id")
-    public Result<DishVO> selectDishById(@PathVariable Integer id) {
+    public Result<DishVO> selectDishById(@PathVariable Long id) {
         log.info("selectDishById:{}", id);
         DishVO dishVO = dishService.selectDishById(id);
         return Result.success(dishVO);

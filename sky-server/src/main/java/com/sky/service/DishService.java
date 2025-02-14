@@ -5,6 +5,7 @@ import com.sky.annotation.AutoFill;
 import com.sky.constant.AutoFillConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
 import com.sky.result.PageResult;
 import com.sky.vo.DishVO;
@@ -35,7 +36,7 @@ public interface DishService {
      * @param id dish id
      * @return dishVO
      */
-    DishVO selectDishById(Integer id);
+    DishVO selectDishById(Long id);
 
     /**
      * delete dishes
@@ -50,4 +51,6 @@ public interface DishService {
      * @return result
      */
     void modifyDish(DishDTO dishDTO);
+
+    List<DishVO> listWithFlavor(Dish dish);
 }

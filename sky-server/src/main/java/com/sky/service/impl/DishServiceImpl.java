@@ -87,7 +87,7 @@ public class DishServiceImpl implements DishService {
      * @return dishVO
      */
     @Override
-    public DishVO selectDishById(Integer id) {
+    public DishVO selectDishById(Long id) {
         DishVO dishVO = dishMapper.selectDishById(id);
         List<DishFlavor> dishFlavors = dishFlavorMapper.getFlavorList(id);
         dishVO.setFlavors(dishFlavors);
@@ -144,6 +144,27 @@ public class DishServiceImpl implements DishService {
         dishFlavorMapper.deleteBatch(id);
 
         dishFlavorMapper.insertBatch(dishDTO.getFlavors());
+    }
+
+    @Override
+    public List<DishVO> listWithFlavor(Dish dish) {
+        //get all dishes in that category
+        List<Dish> dishList=dishMapper.list(dish);
+
+        //create empty list to store all dishes that are used to return to frontend
+        List<DishVO> dishVOList=new ArrayList<>();
+
+        //append corresponding flavour to dishes
+        for (Dish d : dishList) {
+            List<DishFlavor> df = dishFlavorMapper.getFlavorList(d.getId());
+
+            DishVO dishVO= new DishVO();
+            BeanUtils.copyProperties(d,dishVO);
+            dishVO.setFlavors(df);
+            dishVOList.add(dishVO);
+        }
+        //return dish list VO
+        return dishVOList;
     }
 
 

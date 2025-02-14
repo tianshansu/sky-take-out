@@ -43,6 +43,14 @@ sky:
     # Set the token name passed by the front end
     admin-token-name: token
 
+    user-secret-key: tsss
+    user-ttl: 604800000
+    user-token-name: authentication
+
+  wechat:
+    appid: ${sky.wechat.appid}
+    secret: ${sky.wechat.secret}
+
   alioss:
     endpoint: ${sky.alioss.endpoint}
     access-key-id: ${sky.alioss.access-key-id}
