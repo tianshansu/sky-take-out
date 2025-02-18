@@ -174,5 +174,16 @@ public class DishServiceImpl implements DishService {
         return dishVOList;
     }
 
+    /**
+     * change dish status
+     * @param id dish id
+     * @param status new status, 0=disable, 1=enable
+     */
+    @Override
+    public void changeDishStatus(Long id, Integer status) {
+        Dish dish=Dish.builder().id(id).status(status).build();
+        dishMapper.modifyDish(dish);
+    }
+
 
 }

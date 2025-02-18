@@ -114,4 +114,21 @@ public class DishController {
 
         return Result.success(dishList);
     }
+
+    /**
+     * change dish status
+     * @param status new status(0=disable, 1=enable)
+     * @param id dish id
+     * @return result
+     */
+    @PostMapping("/status/{status}")
+    @ApiOperation("change dish status")
+    public Result changeDishStatus(@PathVariable Integer status, @RequestParam Long id){
+        log.info("id:{}", id);
+        log.info("changeDishStatus:{}", status);
+
+        dishService.changeDishStatus(id, status);
+
+        return Result.success();
+    }
 }

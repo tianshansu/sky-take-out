@@ -52,5 +52,17 @@ public interface DishService {
      */
     void modifyDish(DishDTO dishDTO);
 
+    /**
+     * list dishes with flavors
+     * @param dish dish
+     * @return dishVO list
+     */
     List<DishVO> listWithFlavor(Dish dish);
+
+    /**
+     * change dish status
+     * @param id dish id
+     * @param status new status, 0=disable, 1=enable
+     */
+    void changeDishStatus(Long id, Integer status);
 }
