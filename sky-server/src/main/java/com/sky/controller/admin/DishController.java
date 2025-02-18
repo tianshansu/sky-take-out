@@ -1,7 +1,9 @@
 package com.sky.controller.admin;
 
+import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
@@ -97,5 +99,19 @@ public class DishController {
 
         dishService.modifyDish(dishDTO);
         return Result.success();
+    }
+
+    @GetMapping("/list")
+    @ApiOperation("find dishes by category id")
+    public Result<List<DishVO>> listDish(Long categoryId) {
+        log.info("find dishes by category id:{}", categoryId);
+
+        Dish dish = new Dish();
+        dish.setCategoryId(categoryId);
+        dish.setStatus(StatusConstant.ENABLE); //only available dishes can be shown on the page
+        List<DishVO> dishList = dishService.listWithFlavor(dish);
+
+
+        return Result.success(dishList);
     }
 }

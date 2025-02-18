@@ -4,12 +4,16 @@
 <mapper namespace="com.sky.mapper.DishFlavorMapper">
 
     <insert id="insertBatch">
-        insert into dish_flavor (dish_id, name, value)
-        values
-        <foreach collection="flavors" item="df" separator=",">
-            (#{df.dishId},#{df.name},#{df.value})
-        </foreach>
+        <if test="flavors != null and flavors.size() > 0"> /** if there are flavours**/
+            insert into dish_flavor (dish_id, name, value)
+            <trim prefix="values" suffixOverrides=",">
+                <foreach collection="flavors" item="df" separator=",">
+                    (#{df.dishId},#{df.name},#{df.value})
+                </foreach>
+            </trim>
+        </if>
     </insert>
+
 
     <delete id="deleteBatch">
         delete

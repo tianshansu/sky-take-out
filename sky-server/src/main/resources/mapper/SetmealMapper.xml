@@ -16,5 +16,47 @@
         </where>
     </select>
 
+    <select id="page" resultType="com.sky.vo.SetmealVO">
+        select *
+        from setmeal
+        <where>
+            <if test="name != null and name != ''">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="status != null">
+                and status=#{status}
+            </if>
+            <if test="categoryId != null">
+                and category_id=#{categoryId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addSetmeal" useGeneratedKeys="true" keyProperty="id">
+        insert into setmeal (category_id, name, price, description, image)
+        values (#{categoryId}, #{name}, #{price},#{description}, #{image})
+    </insert>
+
+    <update id="modifySetmeal" parameterType="Setmeal">
+        update setmeal
+        <set>
+            <if test="name != null and name !='' ">name=#{name},</if>
+            <if test="categoryId != null">category_id=#{categoryId},</if>
+            <if test="price != null">price=#{price},</if>
+            <if test="image != null">image=#{image},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="status != null">status=#{status}</if>
+        </set>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteBatch">
+        delete
+        from setmeal
+        where id in
+        <foreach collection="idList" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
 
 </mapper>
