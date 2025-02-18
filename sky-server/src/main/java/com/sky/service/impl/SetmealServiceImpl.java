@@ -12,6 +12,7 @@ import com.sky.mapper.SetmealDishMapper;
 import com.sky.mapper.SetmealMapper;
 import com.sky.result.PageResult;
 import com.sky.service.SetmealService;
+import com.sky.vo.DishItemVO;
 import com.sky.vo.DishVO;
 import com.sky.vo.SetmealVO;
 import org.springframework.beans.BeanUtils;
@@ -152,5 +153,22 @@ public class SetmealServiceImpl implements SetmealService {
     public void changeStatus(Long id, Integer status) {
         Setmeal setmeal = Setmeal.builder().id(id).status(status).build();
         setMealMapper.modifySetmeal(setmeal);
+    }
+
+    /**
+     * get all dishes in setmeal
+     * @param id setmeal id
+     */
+    @Override
+    public List<DishItemVO> getSetmealDishesById(Long id) {
+        List<SetmealDish> dishes=  setmealDishMapper.getAllDishesBySetmealId(id);
+        List<DishItemVO> dishItemVOs = new ArrayList<>();
+        for (SetmealDish setmealDish : dishes) {
+            DishItemVO dishItemVO = new DishItemVO();
+            BeanUtils.copyProperties(setmealDish, dishItemVO);
+            System.out.println(dishItemVO.toString());
+            dishItemVOs.add(dishItemVO);
+        }
+        return dishItemVOs;
     }
 }

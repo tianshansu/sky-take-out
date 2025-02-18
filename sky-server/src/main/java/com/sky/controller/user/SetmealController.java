@@ -2,16 +2,16 @@ package com.sky.controller.user;
 
 import com.sky.constant.StatusConstant;
 import com.sky.entity.Setmeal;
+import com.sky.entity.SetmealDish;
 import com.sky.result.Result;
 import com.sky.service.SetmealService;
+import com.sky.vo.DishItemVO;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController("userSetmealController")
@@ -23,6 +23,11 @@ public class SetmealController {
     @Autowired
     SetmealService setmealService;
 
+    /**
+     * find setmeal by category id
+     * @param categoryId categoryId
+     * @return result
+     */
     @ApiOperation("find setmeal by category id")
     @GetMapping("/list")
     public Result<List<Setmeal>> list(@RequestParam Long categoryId) {
@@ -34,5 +39,20 @@ public class SetmealController {
 
         List<Setmeal> list=setmealService.listByCategoryId(setmeal);
         return Result.success(list);
+    }
+
+    /**
+     * find dishes by setmeal id
+     * @param id id
+     * @return result
+     */
+    @ApiOperation("find dishes by setmeal id")
+    @GetMapping("/dish/{id}")
+    public Result<List<DishItemVO>> findDishes(@PathVariable Long id) {
+        log.info("find dishes by setmeal id:{}", id);
+
+        List<DishItemVO> dishesVO= setmealService.getSetmealDishesById(id);
+
+        return Result.success(dishesVO);
     }
 }
