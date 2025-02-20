@@ -1,5 +1,6 @@
 package com.sky.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 import java.io.Serializable;
 
 /**
- * 地址簿
+ * address book
  */
 @Data
 @Builder
@@ -20,42 +21,44 @@ public class AddressBook implements Serializable {
 
     private Long id;
 
-    //用户id
+    // User ID
     private Long userId;
 
-    //收货人
+    // Consignee
     private String consignee;
 
-    //手机号
+    // Phone number
     private String phone;
 
-    //性别 0 女 1 男
-    private String sex;
+    // Gender: 0 - Female, 1 - Male
+    @JsonProperty("sex")
+    private String gender;
 
-    //省级区划编号
+    // Province code
     private String provinceCode;
 
-    //省级名称
+    // Province name
     private String provinceName;
 
-    //市级区划编号
+    // City code
     private String cityCode;
 
-    //市级名称
+    // City name
     private String cityName;
 
-    //区级区划编号
+    // District code
     private String districtCode;
 
-    //区级名称
+    // District name
     private String districtName;
 
-    //详细地址
+    // Detailed address
     private String detail;
 
-    //标签
+    // Label
     private String label;
 
-    //是否默认 0否 1是
+    // Default status: 0 - No, 1 - Yes
     private Integer isDefault;
+
 }
