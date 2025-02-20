@@ -44,11 +44,11 @@ public class DishController {
         List<DishVO> list = (List<DishVO>) redisTemplate.opsForValue().get(key);
         //if yes, return info in chache
         if(list!=null&&list.size()>0){
-            System.out.println("found cache");
+            //System.out.println("found cache");
             return Result.success(list);
         }
 
-        System.out.println("no cache");
+        //System.out.println("no cache");
         //if no, search in db and store info in redis cache
         Dish dish = new Dish();
         dish.setCategoryId(categoryId);
