@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -60,6 +61,7 @@ public class SetmealController {
      */
     @ApiOperation("add new setmeal")
     @PostMapping
+    @CacheEvict(cacheNames = "setmealCache", key="#setmealDTO.categoryId") //everytime adding a new setmeal, delete all caches belong to this category
     public Result addSetmeal(@RequestBody SetmealDTO setmealDTO) {
         log.info("add setmeal:{}", setmealDTO);
         setmealService.addSetmeal(setmealDTO);
@@ -73,6 +75,7 @@ public class SetmealController {
      */
     @ApiOperation("modify setmeal")
     @PutMapping
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //delete all caches
     public Result modifySetmeal(@RequestBody SetmealDTO setmealDTO) {
         log.info("modify setmeal:{}", setmealDTO);
         setmealService.modifySetmeal(setmealDTO);
@@ -86,6 +89,7 @@ public class SetmealController {
      */
     @ApiOperation("delete setmeal")
     @DeleteMapping
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //delete all caches
     public Result deleteSetmeal(@RequestParam String ids) {
         log.info("delete setmeals:{}", ids);
 
@@ -107,6 +111,7 @@ public class SetmealController {
      */
     @ApiOperation("set setmeal status")
     @PostMapping("/status/{status}")
+    @CacheEvict(cacheNames = "setmealCache",allEntries = true) //delete all caches
     public Result setmealStatus(@PathVariable Integer status, @RequestParam Long id) {
         log.info("setmeal id:{}", id);
         log.info("setmeal status:{}", status);

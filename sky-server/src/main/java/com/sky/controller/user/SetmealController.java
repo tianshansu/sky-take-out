@@ -10,8 +10,10 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Key;
 import java.util.List;
 
 @RestController("userSetmealController")
@@ -30,6 +32,7 @@ public class SetmealController {
      */
     @ApiOperation("find setmeal by category id")
     @GetMapping("/list")
+    @Cacheable(cacheNames="setmealCache", key="#categoryId")
     public Result<List<Setmeal>> list(@RequestParam Long categoryId) {
         log.info("find setmeal by category id:{}", categoryId);
 

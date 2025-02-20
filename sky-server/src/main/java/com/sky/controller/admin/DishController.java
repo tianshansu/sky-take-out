@@ -12,10 +12,12 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Dish related
@@ -28,6 +30,8 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
+    @Autowired
+    private RedisTemplate redisTemplate;
 
     /**
      * Add new dish
@@ -41,6 +45,9 @@ public class DishController {
 
         dishService.add(dishDTO);
 
+        //clear cache in redis
+        String key="dish_"+dishDTO.getCategoryId();
+        cleanCache(key);
 
         return Result.success();
     }
@@ -84,6 +91,10 @@ public class DishController {
 
         dishService.deleteBatch(ids);
 
+        //clear cache in redis(delete all data that key starts with dish_)
+        cleanCache("*dish_*");
+
+
         return Result.success();
     }
 
@@ -98,6 +109,11 @@ public class DishController {
         log.info("modify dish:{}", dishDTO);
 
         dishService.modifyDish(dishDTO);
+
+        //clear cache in redis(delete all data that key starts with dish_)
+        cleanCache("*dish_*");
+
+
         return Result.success();
     }
 
@@ -129,6 +145,14 @@ public class DishController {
 
         dishService.changeDishStatus(id, status);
 
+        //clear cache in redis(delete all data that key starts with dish_)
+        cleanCache("*dish_*");
+
         return Result.success();
+    }
+
+    private void cleanCache(String pattern){
+        Set keys=redisTemplate.keys(pattern);
+        redisTemplate.delete(keys);
     }
 }
