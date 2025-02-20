@@ -21,4 +21,15 @@ public interface ShoppingCartService {
      * @return
      */
     List<ShoppingCart> list();
+
+    /**
+     * delete all in shopping cart
+     */
+    void cleanAll();
+
+    /**
+     * delete single element in shopping cart
+     * @param shoppingCartDTO shoppingCartDTO
+     */
+    void sub(ShoppingCartDTO shoppingCartDTO);
 }
