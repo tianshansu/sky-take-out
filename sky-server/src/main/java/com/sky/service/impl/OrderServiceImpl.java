@@ -153,6 +153,7 @@ public class OrderServiceImpl implements OrderService {
         BeanUtils.copyProperties(ordersCancelDTO, order);
         //change order status to [cancelled]
         order.setStatus(Orders.CANCELLED);
+        order.setCancelTime(LocalDateTime.now());
         orderMapper.modifyOrder(order);
     }
 
