@@ -4,6 +4,7 @@ import com.sky.dto.*;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.OrderService;
+import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderVO;
 import io.swagger.annotations.Api;
@@ -47,6 +48,14 @@ public class OrderController {
         OrderVO orderVO=orderService.orderDetail(id);
         return Result.success(orderVO);
     }
+
+   /* @ApiOperation("payment")
+    @PutMapping("/payment")
+    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) {
+        log.info("ordersPaymentDTO:{}", ordersPaymentDTO);
+        OrderPaymentVO orderPaymentVO=orderService.payment(ordersPaymentDTO);
+        return Result.success(orderPaymentVO);
+    }*/
 
     /**
      * confirm an order
