@@ -1,5 +1,6 @@
 package com.sky.controller.user;
 
+import com.sky.dto.OrdersCancelDTO;
 import com.sky.dto.OrdersPaymentDTO;
 import com.sky.dto.OrdersSubmitDTO;
 import com.sky.result.PageResult;
@@ -76,7 +77,9 @@ public class OderController {
     @PutMapping("/cancel/{id}")
     public Result cancelOrder(@PathVariable Long id) {
         log.info("cancelOrder:{}", id);
-        orderService.cancelOrder(id);
+        OrdersCancelDTO ordersCancelDTO=new OrdersCancelDTO();
+        ordersCancelDTO.setId(id);
+        orderService.cancelOrder(ordersCancelDTO);
         return Result.success();
     }
 

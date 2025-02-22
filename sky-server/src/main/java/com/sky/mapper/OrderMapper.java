@@ -2,6 +2,7 @@ package com.sky.mapper;
 
 
 import com.github.pagehelper.Page;
+import com.sky.dto.OrdersPageQueryDTO;
 import com.sky.entity.Orders;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -35,9 +36,23 @@ public interface OrderMapper {
     Orders findOrderById(Long id);
 
     /**
-     * cancel an order
-     * @param id order id
+     * orders conditional search
+     * @param ordersPageQueryDTO ordersPageQueryDTO
+     * @return order paging
      */
-    @Update("update orders set status=6 where id=#{id}")
-    void cancelOrder(Long id);
+    Page<Orders> conditionSearch(OrdersPageQueryDTO ordersPageQueryDTO);
+
+    /**
+     *confirm an order
+     * @param order order
+     */
+    void modifyOrder(Orders order);
+
+    /**
+     * view order statistics
+     * @param status status
+     * @return count(integer)
+     */
+    @Select("select count(id) from orders where status=#{status}")
+    Integer statistics(Integer status);
 }
