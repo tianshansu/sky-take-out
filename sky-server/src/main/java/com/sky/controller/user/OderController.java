@@ -96,6 +96,31 @@ public class OderController {
         return Result.success();
     }
 
+    /**
+     * order payment (not actual Wechat payment)
+     * @param ordersPaymentDTO ordersPaymentDTO
+     * @return orderPaymentVO
+     */
+    @ApiOperation("payment")
+    @PutMapping("/payment")
+    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) {
+        log.info("ordersPaymentDTO:{}", ordersPaymentDTO);
+        OrderPaymentVO orderPaymentVO=orderService.payment(ordersPaymentDTO);
+        orderService.paySuccess(ordersPaymentDTO.getOrderNumber());
+        return Result.success(orderPaymentVO);
+    }
 
+    /**
+     * order reminder
+     * @param id order id
+     * @return result
+     */
+    @ApiOperation("order reminder")
+    @GetMapping("/reminder/{id}")
+    public Result orderReminder(@PathVariable Long id) {
+        log.info("orderReminder:{}", id);
+        orderService.reminder(id);
+        return Result.success();
+    }
 
 }

@@ -9,6 +9,7 @@ import com.sky.context.BaseContext;
 import com.sky.dto.*;
 import com.sky.entity.*;
 import com.sky.exception.AddressBookBusinessException;
+import com.sky.exception.OrderBusinessException;
 import com.sky.exception.ShoppingCartBusinessException;
 import com.sky.mapper.AddressBookMapper;
 import com.sky.mapper.OrderDetailMapper;
@@ -20,9 +21,9 @@ import com.sky.vo.OrderPaymentVO;
 import com.sky.vo.OrderStatisticsVO;
 import com.sky.vo.OrderSubmitVO;
 import com.sky.vo.OrderVO;
+import com.sky.websocket.WebSocketServer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.graphql.GraphQlProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,6 +44,10 @@ public class OrderServiceImpl implements OrderService {
     private AddressBookMapper addressBookMapper;
     @Autowired
     private ShoppingCartMapper shoppingCartMapper;
+    @Autowired
+    private WebSocketServer webSocketServer;
+
+
 
     /**
      * user places order
@@ -279,21 +284,34 @@ public class OrderServiceImpl implements OrderService {
         return orderStatisticsVO;
     }
 
-    /*@Override
+    /**
+     * order payment (not actual Wechat payment)
+     * @param ordersPaymentDTO ordersPaymentDTO
+     * @return orderPaymentVO
+     */
+    @Override
     public OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO) {
         Long userId=BaseContext.getCurrentId();
+
         JSONObject jsonObject=new JSONObject();
+
+        if(jsonObject.getString("code")!=null && jsonObject.getString("code").equals("ORDERPAID")){
+            throw new OrderBusinessException("This order has been payed.");
+        }
 
         OrderPaymentVO orderPaymentVO=jsonObject.toJavaObject(OrderPaymentVO.class);
         orderPaymentVO.setPackageStr(jsonObject.getString("package"));
 
-
-
-        return null;
+        return orderPaymentVO;
     }
 
-    private void paySuccess(Long orderNum){
-        Orders orderDB=orderMapper.findOrderById(orderNum);
+    /**
+     * payment success
+     * @param orderNum order number
+     */
+    @Override
+    public void paySuccess(String orderNum){
+        Orders orderDB=orderMapper.findOrderByNumber(orderNum);
 
         Orders order=new Orders();
         order.setId(orderDB.getId());
@@ -303,14 +321,32 @@ public class OrderServiceImpl implements OrderService {
 
         orderMapper.modifyOrder(order);
 
-        Map map=new HashMap();
+        Map map=new HashMap<>();
         map.put("type",1);
         map.put("orderId",orderDB.getId());
-        map.put("content","Order Number"+orderNum);
+        map.put("content","Order Number:"+orderNum);
 
         String json= JSON.toJSONString(map);
-        websocketserve
-    }*/
+        webSocketServer.sendToAllClient(json);
+
+    }
+
+    /**
+     * order reminder
+     * @param id order id
+     */
+    @Override
+    public void reminder(Long id) {
+        Orders order=orderMapper.findOrderById(id);
+
+        Map map=new HashMap<>();
+        map.put("type",2);
+        map.put("orderId",order.getId());
+        map.put("content","Order Number:"+order.getNumber());
+
+        String json= JSON.toJSONString(map);
+        webSocketServer.sendToAllClient(json);
+    }
 
     private PageResult getPageResult(Page<Orders> orders) {
         List<OrderVO> orderVOs = new ArrayList<>();

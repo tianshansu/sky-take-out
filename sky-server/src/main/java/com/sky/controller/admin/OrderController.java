@@ -49,13 +49,7 @@ public class OrderController {
         return Result.success(orderVO);
     }
 
-   /* @ApiOperation("payment")
-    @PutMapping("/payment")
-    public Result<OrderPaymentVO> payment(@RequestBody OrdersPaymentDTO ordersPaymentDTO) {
-        log.info("ordersPaymentDTO:{}", ordersPaymentDTO);
-        OrderPaymentVO orderPaymentVO=orderService.payment(ordersPaymentDTO);
-        return Result.success(orderPaymentVO);
-    }*/
+
 
     /**
      * confirm an order

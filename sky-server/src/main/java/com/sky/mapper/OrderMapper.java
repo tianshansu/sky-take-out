@@ -8,12 +8,29 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface OrderMapper {
 
+    /**
+     * count by map
+     * @param map map
+     * @return int
+     */
+    Integer countByMap(Map map);
+
+    /**
+     * get turnover by date range
+     * @param begin
+     * @param end
+     * @return
+     */
+    @Select("select sum(amount) from orders where status=5 and order_time>#{begin} and order_time<#{end}")
+    BigDecimal turnoverStatistics(LocalDateTime begin, LocalDateTime end);
 
     /**
      * user submit an order
@@ -65,4 +82,12 @@ public interface OrderMapper {
      */
     @Select("select * from orders where status=#{status} and order_time < #{orderTime}")
     List<Orders> checkForTimeoutOrder(Integer status, LocalDateTime orderTime);
+
+    /**
+     * find order by order number
+     * @param orderNum
+     * @return
+     */
+    @Select("select * from orders where number=#{orderNum}")
+    Orders findOrderByNumber(String orderNum);
 }

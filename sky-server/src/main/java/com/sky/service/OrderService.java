@@ -84,5 +84,23 @@ public interface OrderService {
      */
     OrderStatisticsVO orderStatistics();
 
-    //OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO);
+    /**
+     * order payment (not actual Wechat payment)
+     * @param ordersPaymentDTO ordersPaymentDTO
+     * @return orderPaymentVO
+     */
+    OrderPaymentVO payment(OrdersPaymentDTO ordersPaymentDTO);
+
+
+    /**
+     * payment success
+     * @param orderNum order number
+     */
+    void paySuccess(String orderNum);
+
+    /**
+     * order reminder
+     * @param id order id
+     */
+    void reminder(Long id);
 }
