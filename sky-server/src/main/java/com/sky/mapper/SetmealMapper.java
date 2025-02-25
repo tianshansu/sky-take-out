@@ -2,7 +2,6 @@ package com.sky.mapper;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
-import com.sky.dto.SetmealDTO;
 import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.enumeration.OperationType;
@@ -11,6 +10,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface SetmealMapper {
@@ -28,7 +28,7 @@ public interface SetmealMapper {
     /**
      * selectSetmealById
      * @param id setmeal id
-     * @return
+     * @return setmeal
      */
     @Select("select * from setmeal where id=#{id}")
     Setmeal selectSetmealById(Long id);
@@ -52,4 +52,11 @@ public interface SetmealMapper {
      * @param idList idList
      */
     void deleteBatch(List<Long> idList);
+
+    /**
+     * count by map
+     * @param map map
+     * @return count
+     */
+    Integer countByMap(Map map);
 }

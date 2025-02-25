@@ -32,6 +32,15 @@
         </where>
     </select>
 
+    <select id="countByMap" resultType="java.lang.Integer">
+        select count(id) from setmeal
+        <where>
+            <if test="status!=null">
+                status=#{status}
+            </if>
+        </where>
+    </select>
+
     <insert id="addSetmeal" useGeneratedKeys="true" keyProperty="id">
         insert into setmeal (category_id, name, price, description, image)
         values (#{categoryId}, #{name}, #{price},#{description}, #{image})
