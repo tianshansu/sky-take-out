@@ -40,9 +40,7 @@ public class WorkspaceServiceImpl implements WorkspaceService {
      * @return businessDataVO
      */
     @Override
-    public BusinessDataVO getBusinessData() {
-        LocalDateTime begin = LocalDateTime.of(LocalDate.now(), LocalTime.MIN);
-        LocalDateTime end = LocalDateTime.of(LocalDate.now(), LocalTime.MAX);
+    public BusinessDataVO getBusinessData(LocalDateTime begin, LocalDateTime end) {
 
         //get new users count
         Integer newUsers = userMapper.getUserCount(begin, end);
